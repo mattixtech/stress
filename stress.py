@@ -2,7 +2,6 @@
 A trivial utility for consuming system resources.
 """
 import multiprocessing
-import sys
 import time
 
 
@@ -34,46 +33,45 @@ def _parse_args():
     :return: the parsed arguments
     """
 
+    # TODO: take -p n processes to spin and -m n megabytes of RAM to allocate
+
     pass
 
 
-def stress_processes(n):
+def stress_processes(num_processes):
     """
-    TODO
+    Starts a given number infinite processing loops.
 
-    :param n: the number of processes to spin
+    :param num_processes: the number of processes to spin
     :return: None
     """
 
-    for _ in range(n):
+    for _ in range(num_processes):
         multiprocessing.Process(target=_spin).start()
 
 
-def stress_ram(n):
+def stress_ram(ram_to_allocate_mb):
     """
-    TODO
+    Attempts to allocate the given amount of RAM to the running Python process.
 
-    :param n: the amount of RAM in megabytes to allocate
+    :param ram_to_allocate_mb: the amount of RAM in megabytes to allocate
     :return: None
     """
 
     try:
         # Each element takes approx 8 bytes
         # Multiply n by 1024**2 to convert from MB to Bytes
-        l = [0] * int(((n / 8) * (1024 ** 2)))
-        allocated_bytes = int(sys.getsizeof(l) / (1024 ** 2))
-        _log("Allocated {} megabytes".format(allocated_bytes))
-        #time.sleep(10)
+        _list = [0] * int(((ram_to_allocate_mb / 8) * (1024 ** 2)))
+
+        while True:
+            time.sleep(1)
     except MemoryError:
         # We didn't have enough RAM for our attempt, so we will recursively try
         # smaller amounts 10% smaller at a time
-        stress_ram(int(n * 0.9))
+        stress_ram(int(ram_to_allocate_mb * 0.9))
 
 
 if __name__ == '__main__':
-    # spin_n(multiprocessing.cpu_count())
-    # spin_n(2)
-    start = time.time()
-    stress_ram(1024 * 10)
-    end = time.time()
-    _log("Took {} seconds".format(round(end - start, 2)))
+    # TODO: Parse the args and execute the correct stress
+    # TODO: Default to spinning max core count and allocating max phys RAM
+    pass
