@@ -7,7 +7,7 @@ setuptools.setup(
     name='stress',
     version='1.0.0',
     packages=['stress'],
-    install_requires=['psutil==5.4.7'],
+    install_requires=['psutil==5.6.6'],
     entry_points={
         'console_scripts': ['stress=stress:_cmd_line']
     },
